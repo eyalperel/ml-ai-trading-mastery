@@ -4,7 +4,7 @@
 
 ## Current Progress
 - âœ… Week 1, Days 1-3: Vector class with norms, distance, statistics
-- í¾¯ Target: Quant Researcher / Algorithmic Trading Strategist
+- Target: Quant Researcher / Algorithmic Trading Strategist
 
 ## Focus
 - Systematic trading (alpha generation, NOT derivatives pricing)
