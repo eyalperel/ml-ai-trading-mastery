@@ -272,6 +272,52 @@ class Vector:
         Trading: Feature normalization for ML models
         """
         return self.de_mean().scalar_multiply(1 / self.std())
+    
+    def correlation_with(self, other):
+        """
+        Calculate correlation coefficient with another vector.
+
+        Correlation measures LINEAR relationship between two variables.
+        Range: [-1, 1]
+        - +1: Perfect positive correlation
+        -  0: No linear correlation
+        - -1: Perfect negative correlation
+
+        Formula: corr(a,b) = (a_demean · b_demean) / (||a_demean|| ||b_demean||)
+
+        Trading application:
+        - Pairs trading: Find highly correlated stocks
+        - Diversification: Low correlation reduces portfolio risk
+        - Factor models: Correlation between returns and factors
+
+        Args:
+            other: Another Vector object
+
+        Returns:
+            float: Correlation coefficient in [-1, 1]
+
+        Example:
+            >>> returns_spy = Vector([0.01, -0.02, 0.03, -0.01])
+            >>> returns_qqq = Vector([0.02, -0.03, 0.04, -0.01])
+            >>> returns_spy.correlation_with(returns_qqq)
+            0.9987  # Highly correlated!
+        """
+        # De-mean both vectors (center them at zero)
+        a_demean = self.de_mean()
+        b_demean = other.de_mean()
+
+        # Calculate dot product of de-meaned vectors
+        numerator = a_demean.dot(b_demean)
+
+        # Calculate norms of de-meaned vectors
+        denominator = a_demean.norm() * b_demean.norm()
+
+        # Handle edge case: if either vector has zero variance (std = 0)
+        if denominator == 0:
+            return 0.0  # Undefined correlation, return 0
+
+        return numerator / denominator
+        
 
 
 

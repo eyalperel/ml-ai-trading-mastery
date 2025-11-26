@@ -130,13 +130,45 @@ def test_standardize():
     assert abs(z.std() - 1.0) < 1e-10  # Std ~1
     print("✓ Standardization")
 
+def test_correlation():
+    """Test correlation calculation"""
+    # Perfect positive correlation
+    v1 = Vector([1, 2, 3, 4, 5])
+    v2 = Vector([2, 4, 6, 8, 10])
+    corr = v1.correlation_with(v2)
+    assert abs(corr - 1.0) < 1e-10
+    print("✓ Perfect positive correlation")
+    
+    # Perfect negative correlation
+    v3 = Vector([1, 2, 3, 4, 5])
+    v4 = Vector([5, 4, 3, 2, 1])
+    corr = v3.correlation_with(v4)
+    assert abs(corr - (-1.0)) < 1e-10
+    print("✓ Perfect negative correlation")
+    
+    # Zero correlation (orthogonal de-meaned)
+    v5 = Vector([-1, 0, 1])
+    v6 = Vector([1, 2, 1])
+    corr = v5.correlation_with(v6)
+    # Should be close to 0 (exactly 0 for these specific values)
+    assert abs(corr) < 1e-10
+    print("✓ Zero correlation")
+    
+    # Symmetry
+    v7 = Vector([1, 2, 3, 4])
+    v8 = Vector([2, 3, 4, 5])
+    assert abs(v7.correlation_with(v8) - v8.correlation_with(v7)) < 1e-10
+    print("✓ Correlation symmetry")
+
+
+
 def run_all_tests():
     """Run all tests"""
     print("\n" + "="*50)
     print("RUNNING VECTOR CLASS TESTS")
     print("="*50 + "\n")
     
-    # Days 1-2 tests (should already pass)
+    # Days 1-2 tests 
     print("--- Days 1-2 Tests ---")
     test_basic_creation()
     test_addition()
@@ -148,7 +180,7 @@ def run_all_tests():
     test_projection()
     test_subtraction()
     
-    # Day 3 tests (implement today)
+    # Day 3 tests 
     print("\n--- Day 3 Tests ---")
     try:
         test_norms()
@@ -160,10 +192,18 @@ def run_all_tests():
         test_standardize()
     except AttributeError as e:
         print(f"⚠ Some Day 3 methods not yet implemented: {e}")
+
+    # Day 4 tests
+    print("\n--- Day 4 Tests ---")
+    try:
+        test_correlation()
+    except AttributeError as e:
+        print(f"⚠ Some Day 4 methods not yet implemented: {e}")
+
     
     print("\n" + "="*50)
     print("ALL IMPLEMENTED TESTS PASSED ✓")
     print("="*50 + "\n")
 
 if __name__ == "__main__":
-    run_all_tests()
+    run_all_tests() 
